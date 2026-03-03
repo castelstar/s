@@ -1,16 +1,27 @@
-[name = "python"
- 
- [phases.setup]
- nixPkgs = ["libopus", "ffmpeg", "pkg-config", "gcc"]
- 
- [phases.install]
- cmds = [
-   "pip install --upgrade pip",
-   "pip install -r requirements.txt"
- ]
- 
- [phases.build]
- cmds = ["echo 'Build complete'"]
- 
- [start]
- cmd = "python bot.py"
+[phases.setup]
+nixPkgs = [
+  "libopus",      # Для голоса
+  "ffmpeg",       # Для аудио
+  "ffmpeg_6-full", # Полная версия FFmpeg
+  "libsodium",    # Для шифрования
+  "libffi",       # Для нативных библиотек
+  "pkg-config",   # Для сборки
+  "gcc",          # Компилятор
+  "openssl",      # Для сетевых соединений
+  "iptables",     # Для сетевых настроек
+  "iputils",      # Для ping и сетевых утилит
+  "curl"          # Для проверки соединения
+]
+
+[phases.install]
+cmds = [
+  "pip install --upgrade pip setuptools wheel",
+  "pip install --no-cache-dir pynacl>=1.5.0",
+  "pip install --no-cache-dir -r requirements.txt"
+]
+
+[start]
+cmd = "python bot.py"
+
+[environment]
+PYTHONUNBUFFERED = "1"
