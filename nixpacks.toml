@@ -1,23 +1,25 @@
 [phases.setup]
 nixPkgs = [
   "libopus",      # Для голоса
-  "ffmpeg",       # Для аудио
-  "ffmpeg_6-full", # Полная версия FFmpeg
+  "ffmpeg",       # Основной ffmpeg
+  "ffmpeg_6-full", # Полная версия ffmpeg
   "libsodium",    # Для шифрования
   "libffi",       # Для нативных библиотек
   "pkg-config",   # Для сборки
   "gcc",          # Компилятор
   "openssl",      # Для сетевых соединений
-  "iptables",     # Для сетевых настроек
-  "iputils",      # Для ping и сетевых утилит
-  "curl"          # Для проверки соединения
+  "which",        # Для проверки путей
+  "coreutils"     # Базовые утилиты
 ]
 
 [phases.install]
 cmds = [
   "pip install --upgrade pip setuptools wheel",
   "pip install --no-cache-dir pynacl>=1.5.0",
-  "pip install --no-cache-dir -r requirements.txt"
+  "pip install --no-cache-dir -r requirements.txt",
+  # Проверяем установку ffmpeg
+  "which ffmpeg || echo 'FFmpeg not found in PATH'",
+  "ffmpeg -version || echo 'FFmpeg not working'"
 ]
 
 [start]
@@ -25,3 +27,4 @@ cmd = "python bot.py"
 
 [environment]
 PYTHONUNBUFFERED = "1"
+FFMPEG_PATH = "/nix/store/*/bin/ffmpeg"  # Подсказка для бота где искать ffmpeg
