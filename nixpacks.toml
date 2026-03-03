@@ -1,0 +1,16 @@
+[name = "python"
+ 
+ [phases.setup]
+ nixPkgs = ["libopus", "ffmpeg", "pkg-config", "gcc"]
+ 
+ [phases.install]
+ cmds = [
+   "pip install --upgrade pip",
+   "pip install -r requirements.txt"
+ ]
+ 
+ [phases.build]
+ cmds = ["echo 'Build complete'"]
+ 
+ [start]
+ cmd = "python bot.py"
