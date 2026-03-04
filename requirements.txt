@@ -14,3 +14,10 @@ gTTS>=2.5.0                # Google TTS — запасной
 
 # HTTP запросы (для Yandex API)
 aiohttp>=3.9.0
+
+# Музыка — скачивает аудио с SoundCloud, YouTube и др.
+yt-dlp>=2024.1.0
+
+# Генерация картинок — aiohttp уже выше (Pollinations AI не требует доп. библиотек)
+
+# Погода — wttr.in (не требует доп. библиотек, только aiohttp)

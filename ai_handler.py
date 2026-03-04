@@ -47,23 +47,24 @@ def system_prompt(name: str) -> str:
 Сегодня: {datetime.now().strftime("%d.%m.%Y, %A")}"""
 
 
-async def get_response(user_input: str, history: list, bot_name: str) -> str:
+async def get_response(user_input: str, history: list, bot_name: str, system_override: str = None) -> str:
     """Главная функция — пробует YandexGPT, при ошибке — встроенные ответы"""
     if AI_AVAILABLE:
         try:
-            return await _yandex_gpt(user_input, history, bot_name)
+            return await _yandex_gpt(user_input, history, bot_name, system_override)
         except Exception as e:
             log.warning(f"YandexGPT недоступен ({e}), использую встроенные ответы")
 
     return _builtin_response(user_input, bot_name)
 
 
-async def _yandex_gpt(user_input: str, history: list, bot_name: str) -> str:
+async def _yandex_gpt(user_input: str, history: list, bot_name: str, system_override: str = None) -> str:
     """Запрос к YandexGPT Lite через REST API"""
     import aiohttp
 
     # Собираем сообщения для API
-    messages = [{"role": "system", "text": system_prompt(bot_name)}]
+    sys_p = system_override if system_override else system_prompt(bot_name)
+    messages = [{"role": "system", "text": sys_p}]
 
     # Добавляем историю (последние 8 сообщений = 4 обмена)
     for msg in history[-8:]:
